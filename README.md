@@ -1,4 +1,4 @@
-<h3>* Demo for recording live stream video to video on demand using FFmpeg </h3>
+<h3>* Demo for recording live stream  to video on demand using FFmpeg </h3>
 <h3>* Commercial detection script using  python computer vision library to detect start and end of ads on the stream </h3>
 <p>Demo: http://stormy-escarpment-10471.herokuapp.com/#/elprograma22/1Cw2pT3f </p>
 <img src="http://compression.ru/video/tv_commercial_detector/images/howto-small.png"> 
