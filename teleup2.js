@@ -57,7 +57,7 @@ var filePath = "datos2.json";
 var params = {
   Bucket: 'bucketeer-c970a6d1-f419-4561-b5d3-03be633a5c0c/public',
   Body : fs.createReadStream(filePath),
-  Key : "drjson.json"
+  Key : "hello2.json"
 };
 
 s3.upload(params, function (err, data) {

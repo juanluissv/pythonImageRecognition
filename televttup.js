@@ -12,7 +12,6 @@ var logger = require('morgan');
 var moment = require('moment');
 var request = require('request');
 var fs = require('fs');
-var timer = require('moment-timer');
 
 var AWS = require('aws-sdk');
 var s3  = new AWS.S3();
@@ -52,32 +51,25 @@ app.use(function(req, res, next) {
 
 var fftry = function () {
 
-for (var i = 1; i < 1801; i++) {
-var filePath = "telecut/" + i + ".png";
+var filePath = "teleimages.vtt";
 var params = {
-  Bucket: 'bucketeer-c970a6d1-f419-4561-b5d3-03be633a5c0c/public/dr',
+  Bucket: 'bucketeer-c970a6d1-f419-4561-b5d3-03be633a5c0c/public',
   Body : fs.createReadStream(filePath),
-  Key : i + ".png"
+  Key : "teleimages.vtt"
 };
+
 s3.upload(params, function (err, data) {
+  if (err) {
+    console.log("Error", err);
+  }
   if (data) {
     console.log("Uploaded in:", data.Location);
+    process.exit()
   }
 });
-}
 
 
-  var timer = moment.duration(2, "minutes").timer(function() {
-  console.log('timer');
-  process.exit() 
-})
-
-
-
-
-
-
-}
+ }
 fftry()
 
 

@@ -12,6 +12,7 @@ var logger = require('morgan');
 var moment = require('moment');
 var request = require('request');
 var fs = require('fs');
+var timer = require('moment-timer');
 
 var AWS = require('aws-sdk');
 var s3  = new AWS.S3();
@@ -48,66 +49,49 @@ app.use(function(req, res, next) {
   next()
 });
 
-var ffmpeg = require('fluent-ffmpeg');
-var command = ffmpeg();
 
+var fftry = function () {
 
-//teleprensa noticias 
-
-var spawn = require('child_process').spawn;
-
-var cmd = 'ffmpeg';
-
-var args = [
-    '-y', 
-    '-i', 'https://5d32e2b9b7eed.streamlock.net:4443/tv33sv/live/playlist.m3u8 ',
-    '-t', '00:30:00',
-    '-c', 'copy',
-    '-preset', 'ultrafast -threads 0',
-    '-f', 'mp4', 'telecut/record3.mp4'
-];
-
-
-
-var proc = spawn(cmd, args);
-
-proc.stdout.on('data', function(data) {
-    console.log(data);
-});
-
-proc.stderr.on('data', function(data) {
-    console.log(data);
-});
-
-proc.on('close', function() {
-console.log('finished');
-
-
-var filePath = "telecut/record3.mp4";
+for (var i = 1; i < 3601; i++) {
+var filePath = "telecut/" + i + ".png";
 var params = {
-  Bucket: 'bucketeer-c970a6d1-f419-4561-b5d3-03be633a5c0c/public',
+  Bucket: 'bucketeer-c970a6d1-f419-4561-b5d3-03be633a5c0c/public/tele',
   Body : fs.createReadStream(filePath),
-  Key : "drvid.mp4"
+  Key : i + ".png"
 };
 s3.upload(params, function (err, data) {
-  if (err) {
-    console.log("Error", err);
-  }
   if (data) {
     console.log("Uploaded in:", data.Location);
-    process.exit()
-
   }
 });
+}
 
 
-});
+  var timer = moment.duration(3, "minutes").timer(function() {
+  console.log('timer');
+  process.exit() 
+})
+
+
+
+
+
+
+}
+fftry()
+
+
+
+
+
+
+
 
 
 
 /*
  |--------------------------------------------------------------------------
- | Start the Server
+ | Start the Serverr
  |--------------------------------------------------------------------------
  */
-app.listen(process.env.PORT || 3002)
+app.listen(process.env.PORT || 3001)
